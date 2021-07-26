@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class Traductor : MonoBehaviour
 {
     [SerializeField] private string englishTxt; 
-    [SerializeField] private string chineseTxt; 
     [SerializeField] private string russianTxt; 
 
     public void TranslatingField()
@@ -15,7 +14,5 @@ public class Traductor : MonoBehaviour
             this.gameObject.GetComponent<Text>().text = englishTxt;
         if (UserManager.russianOn == 1)
             this.gameObject.GetComponent<Text>().text = russianTxt;
-        if (UserManager.chineseOn == 1)
-            this.gameObject.GetComponent<Text>().text = chineseTxt;
     }
 }
