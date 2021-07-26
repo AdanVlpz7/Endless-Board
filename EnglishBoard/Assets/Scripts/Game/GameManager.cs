@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static bool GameFinished = false;
+    
     public GameObject platformSpawner;
     public GameObject playerSpawner;
     public GameObject platformPrefab;
@@ -13,7 +14,7 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine(spawningPlatform());
-        Instantiate(playerPrefab, playerSpawner.transform);
+        Instantiate(playerPrefab, new Vector3(Random.Range(0,Screen.width-100),playerSpawner.transform.position.y,0),Quaternion.identity);
     }
 
     // Update is called once per frame
@@ -39,8 +40,13 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator spawningPlatform()
     {
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(10f);
         Instantiate(platformPrefab, platformSpawner.transform);
         StartCoroutine(spawningPlatform());
+    }
+
+    public void QuittingGame()
+    {
+
     }
 }

@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - UserManager
+  - Txt
+  - Toggle Bg
+  - OnText
+  - Handle
+  - Off Text
+  - Platform
+  - UIManager
   layers:
   - Default
   - TransparentFX

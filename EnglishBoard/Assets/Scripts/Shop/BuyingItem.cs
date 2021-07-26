@@ -12,9 +12,11 @@ public class BuyingItem : MonoBehaviour
     [SerializeField] private UserManager userManager;
     [SerializeField] private bool skin;
     public bool canUse = false;
+    private AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = this.GetComponent<AudioSource>();
         userManager = GameObject.FindGameObjectWithTag("UserManager").GetComponent<UserManager>();
         this.GetComponent<Button>().onClick.AddListener(UpdateBtn);
         
@@ -56,6 +58,8 @@ public class BuyingItem : MonoBehaviour
             GainBtn.SetActive(true);
             userManager.UpdateAfterBuying(price, id,skin);
             //userManager.ballArrayAdded.Add(id);
+            if(UserManager.soundOn == 1)
+                audioSource.Play();
             userManager.Save();
         }
     }

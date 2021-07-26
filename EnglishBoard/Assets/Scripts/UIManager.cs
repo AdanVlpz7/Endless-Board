@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,7 +13,27 @@ public class UIManager : MonoBehaviour
     [Tooltip("")] [SerializeField] private GameObject recordsParentObject;
     [Tooltip("")] [SerializeField] private GameObject dailyAwardParentObject;
     [Tooltip("")] [SerializeField] private GameObject shopParentObject;
+    [Tooltip("")] [SerializeField] private GameObject throwingDicePanel;
+    [Tooltip("")] [SerializeField] private UserManager userManager;
 
+    public Sprite[] principalSprites;
+    public GameObject indicatorSkin;
+
+    public Text DiceCount;
+    private void OnEnable()
+    {
+        ChangeIndicatorSkin();
+        ChangeDiceCount();
+    }
+    public void ChangeIndicatorSkin()
+    {
+        int index = PlayerPrefs.GetInt("SkinIndex");
+        indicatorSkin.GetComponent<Image>().sprite = principalSprites[index];
+    }
+    public void ChangeDiceCount()
+    {
+        DiceCount.text = PlayerPrefs.GetInt("PlayerDices").ToString() + " x";
+    }
     public void GoToGame()
     {
         if(principalMenuParentObject.activeSelf)
@@ -29,6 +50,10 @@ public class UIManager : MonoBehaviour
             shopParentObject.SetActive(false);
         if (dailyAwardParentObject.activeInHierarchy)
             dailyAwardParentObject.SetActive(false);
+        if (gameParentObject.activeInHierarchy)
+            gameParentObject.SetActive(false);
+        if (throwingDicePanel.activeInHierarchy)
+            throwingDicePanel.SetActive(false);
         principalMenuParentObject.SetActive(true);
     }
     public void GoToSettingsMenu()
@@ -46,5 +71,24 @@ public class UIManager : MonoBehaviour
     {
         shopParentObject.SetActive(true);
         principalMenuParentObject.SetActive(false);
+    }
+
+    public void ShootingDiceMenu()
+    {
+        if (userManager.dices > 0)
+        {
+            
+            throwingDicePanel.SetActive(true);
+            userManager.dices--;
+            PlayerPrefs.SetInt("PlayerDices", userManager.dices);
+            ChangeDiceCount();
+            StartCoroutine(previousGoToMenu());
+        }
+    }
+
+    private IEnumerator previousGoToMenu()
+    {
+        yield return new WaitForSeconds(6f);
+        GoBackToMenu();
     }
 }

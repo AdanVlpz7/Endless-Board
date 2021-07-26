@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7867099745085482552}
   - component: {fileID: 7201862680281782039}
   - component: {fileID: 7201862680281782032}
-  - component: {fileID: 7201862680281782037}
+  - component: {fileID: 47178121646624461}
   m_Layer: 5
   m_Name: Player
   m_TagString: Player
@@ -60,6 +60,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f07a3d718c8d84288c14c9c0744df4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerSkins:
+  - {fileID: 21300000, guid: 510073abf55ba5d4683b5897a3f926b9, type: 3}
+  - {fileID: 21300000, guid: cdc91f3676f21264fb3913441b157f77, type: 3}
+  - {fileID: 21300000, guid: cd59a951d69c1314f99e9e8d964aec96, type: 3}
+  isGrounded: 1
 --- !u!114 &7201862680281782039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,7 +120,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 99.10889, y: 96.76039}
   m_EdgeRadius: 0
---- !u!50 &7201862680281782037
+--- !u!50 &47178121646624461
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -135,4 +140,4 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0

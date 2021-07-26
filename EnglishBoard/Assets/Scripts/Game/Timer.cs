@@ -10,7 +10,7 @@ public class Timer : MonoBehaviour
     [Tooltip("time scale of the clockE")] [Range(-10f, 10f)] public float timeScale = 1;
     [Tooltip("Text label where the chronometer works")] public Text myText;
     public bool pause = false;
-
+    public UIManager uimanager;
 
     private float frameTimeOnScaleTime = 0f;
     private float timeToShowInSeconds = 60f;
@@ -20,8 +20,9 @@ public class Timer : MonoBehaviour
     private float scaleTimeBeforePause, initialScaleTime = 1;
     public bool timeIsFinished;
     // Start is called before the first frame update
-    void Awake()
+    void OnEnable()
     {
+        uimanager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
         myText = GetComponent<Text>();
         myText.text = "1:00";
         timeToShowInSeconds = 60f;
@@ -45,8 +46,11 @@ public class Timer : MonoBehaviour
         //this is the calculos of the minutes and seconds accord the seconds we are working with
         minutes = (int)timeInSeconds / 60;
         seconds = (int)timeInSeconds % 60;
-        if(minutes == 0 && seconds == 0)
+        if (minutes == 0 && seconds == 0)
+        {
             GameManager.GameFinished = true;
+            uimanager.GoBackToMenu();
+        }
         textoDelReloj = minutes.ToString("00") + ":" + seconds.ToString("00"); //refresh the string of the chronometer
         myText.text = textoDelReloj;//we give the string to the text label object
         

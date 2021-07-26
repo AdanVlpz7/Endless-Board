@@ -159,6 +159,8 @@ public class ToggleController : MonoBehaviour
     }
 	public void UpdateFeaturesSound(int id)
 	{
+		AudioSource audio;
+		audio = GameObject.FindGameObjectWithTag("UserManager").GetComponent<AudioSource>();
 		switch (id)
 		{
 			case 0:
@@ -168,14 +170,17 @@ public class ToggleController : MonoBehaviour
 			case 1:
 				UserManager.musicOn = 1;
 				PlayerPrefs.SetInt("MusicOnKey", 1);
+				audio.Play();
 				break;
 			case 2:
 				UserManager.soundOn = 0;
 				PlayerPrefs.SetInt("SoundOnKey", 0);
+				//;
 				break;
 			case 3:
 				UserManager.musicOn = 0;
 				PlayerPrefs.SetInt("MusicOnKey", 0);
+				audio.Stop();
 				break;
 		}
 	}

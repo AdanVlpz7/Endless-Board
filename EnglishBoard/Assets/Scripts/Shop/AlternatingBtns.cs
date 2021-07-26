@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class AlternatingBtns : MonoBehaviour
 {
-    public static int skinArrayIndex = 0;
-    public static int diceArrayIndex = 0;
+    public static int skinArrayIndex;
+    public static int diceArrayIndex;
     
 
     public GameObject[] imageSkinsIndicator = new GameObject[3];
@@ -21,7 +21,8 @@ public class AlternatingBtns : MonoBehaviour
 
     private void Start()
     {
-        arbitrary1 = skinArrayIndex;
+        UserManager userManager = GameObject.FindGameObjectWithTag("UserManager").GetComponent<UserManager>();
+        skinArrayIndex = userManager.skinIndexUsed;
         for (int i = 0; i < imageSkinsIndicator.Length; i++)
         {
             if (i == skinArrayIndex)
@@ -35,7 +36,7 @@ public class AlternatingBtns : MonoBehaviour
                 ResettingImages(i);
             }
         }
-        arbitrary2 = diceArrayIndex;
+        diceArrayIndex = userManager.diceIndexUsed;
         for (int i = 0; i < imageDicesIndicator.Length; i++)
         {
             if (i == diceArrayIndex)
@@ -66,6 +67,9 @@ public class AlternatingBtns : MonoBehaviour
                         ResettingImage(true);
                         skinArrayIndex = num;
                         arbitrary1 = skinArrayIndex;
+                        UserManager userManager = GameObject.FindGameObjectWithTag("UserManager").GetComponent<UserManager>();
+                        userManager.skinIndexUsed = skinArrayIndex;
+                        PlayerPrefs.SetInt("SkinIndex",arbitrary1);
                     }
                     break;
                 case 1:
@@ -74,6 +78,9 @@ public class AlternatingBtns : MonoBehaviour
                         ResettingImage(false);
                         diceArrayIndex = num;
                         arbitrary2 = diceArrayIndex;
+                        UserManager userManager = GameObject.FindGameObjectWithTag("UserManager").GetComponent<UserManager>();
+                        userManager.diceIndexUsed = diceArrayIndex;
+                        PlayerPrefs.SetInt("DiceIndex",arbitrary2);
                     }
                     break;
             }

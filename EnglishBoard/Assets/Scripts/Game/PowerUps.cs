@@ -19,7 +19,7 @@ public class PowerUps : MonoBehaviour
     void Update()
     {
         //moverlo
-        this.transform.Translate(Vector3.down);
+        this.transform.Translate(Vector3.down * 0.45f);
     }
 
 }

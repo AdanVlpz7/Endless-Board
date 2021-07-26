@@ -13,7 +13,12 @@ public class SaveScript : MonoBehaviour
     void Start()
     {
         userManager = GetComponent<UserManager>();
-        savePath = Application.persistentDataPath + "/gameSaved.save";
+        savePath = Application.persistentDataPath + "/gameSave.save";
+        LoadBallsData();
+    }
+
+    private void Awake()
+    {
         LoadBallsData();
     }
 
@@ -22,9 +27,10 @@ public class SaveScript : MonoBehaviour
         var save = new Save()
         {
             SavedSkinList = userManager.skinBought,
-            indexSkinSaved = AlternatingBtns.skinArrayIndex,
+            //indexSkinSaved = AlternatingBtns.skinArrayIndex,
             SavedDiceList = userManager.diceBought,
-            indexDiceSaved = AlternatingBtns.diceArrayIndex,
+            //indexDiceSaved = AlternatingBtns.diceArrayIndex,
+            AchievementsList = userManager.achievements,
         };
         var binaryFormatter = new BinaryFormatter();
         using (var fileStream = File.Create(savePath))
@@ -44,9 +50,10 @@ public class SaveScript : MonoBehaviour
                 save = (Save)binaryFormatter.Deserialize(fileStream);
             }
             userManager.skinBought = save.SavedSkinList;
-            AlternatingBtns.skinArrayIndex = save.indexSkinSaved;
+            //AlternatingBtns.skinArrayIndex = save.indexSkinSaved;
             userManager.diceBought = save.SavedDiceList;
-            AlternatingBtns.diceArrayIndex = save.indexDiceSaved;
+            //AlternatingBtns.diceArrayIndex = save.indexDiceSaved;
+            userManager.achievements = save.AchievementsList;
             Debug.Log("[SaveScript] Data Loaded");
         }
         else
@@ -62,9 +69,10 @@ public class Save
     //list of Ball that we have bought.
     public List<int> SavedSkinList;
     //last index of our Ball array used.
-    public int indexSkinSaved;
+    //public int indexSkinSaved;
     //list of Ball that we have bought.
     public List<int> SavedDiceList;
     //last index of our Ball array used.
-    public int indexDiceSaved;
+    //public int indexDiceSaved;
+    public List<int> AchievementsList;
 }
