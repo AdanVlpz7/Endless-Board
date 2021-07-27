@@ -13,7 +13,7 @@ public class Timer : MonoBehaviour
     public UIManager uimanager;
 
     private float frameTimeOnScaleTime = 0f;
-    private float timeToShowInSeconds = 60f;
+    public float timeToShowInSeconds = 60f;
     public int minutes = 0; //the int value of the minutes
     public int seconds = 0;//the int value of the seconds
     //variables used to resume the game after the pause

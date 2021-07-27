@@ -16,7 +16,7 @@ public class BuyingItem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = this.GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
         userManager = GameObject.FindGameObjectWithTag("UserManager").GetComponent<UserManager>();
         this.GetComponent<Button>().onClick.AddListener(UpdateBtn);
         
@@ -53,13 +53,17 @@ public class BuyingItem : MonoBehaviour
     {
         if (userManager.coins > price)
         {
+            if (UserManager.soundOn == 1)
+                audioSource.Play();
             UseBtn.GetComponent<Image>().color = Color.white;
-            this.gameObject.SetActive(false);
-            GainBtn.SetActive(true);
+            if (!audioSource.isPlaying)
+            {
+                this.gameObject.SetActive(false);
+                GainBtn.SetActive(true);
+            }
             userManager.UpdateAfterBuying(price, id,skin);
             //userManager.ballArrayAdded.Add(id);
-            if(UserManager.soundOn == 1)
-                audioSource.Play();
+
             userManager.Save();
         }
     }

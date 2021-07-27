@@ -8,10 +8,11 @@ public class PowerUps : MonoBehaviour
 {
     public GameObject imageChild;
     public Sprite[] powerUps;
+    public int randomIndex;
     // Start is called before the first frame update
     void Start()
     {
-        int randomIndex = Random.Range(0, 3);
+        randomIndex = Random.Range(0, 3);
         imageChild.GetComponent<Image>().sprite = powerUps[randomIndex];
     }
 

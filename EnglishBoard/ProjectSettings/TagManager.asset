@@ -12,6 +12,7 @@ TagManager:
   - Off Text
   - Platform
   - UIManager
+  - Timer
   layers:
   - Default
   - TransparentFX

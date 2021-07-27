@@ -32,7 +32,7 @@ public class UserManager : MonoBehaviour
             skinBought.Insert(0, 0);
         if (achievements == null)
             achievements.Insert(8, 0);
-        
+        UpdateTextCoinIndicator();
     }
     private void OnEnable()
     {
@@ -59,6 +59,12 @@ public class UserManager : MonoBehaviour
             generalAudio.Play();
         else
             generalAudio.Stop();
+    }
+
+    public void UpdateTextCoinIndicator()
+    {
+        shopCoinIndicator.text = "$ " + coins.ToString();
+        PlayerPrefs.SetInt("UserCoins", coins);
     }
     public void UpdateAfterBuying(int price, int indexToAdd, bool skin)
     {
