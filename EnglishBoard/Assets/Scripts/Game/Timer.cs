@@ -49,8 +49,19 @@ public class Timer : MonoBehaviour
         if (minutes == 0 && seconds == 0)
         {
             GameManager.GameFinished = true;
+            
+            GameObject playerClone = GameObject.FindGameObjectWithTag("Player");
+            Destroy(playerClone);
+            GameObject[] platformClones = GameObject.FindGameObjectsWithTag("Platform");
+            for(int i = 0; i < platformClones.Length; i++)
+            {
+                Destroy(platformClones[i]);
+            }
+            GameObject collisioner = GameObject.FindGameObjectWithTag("Finish");
+            Destroy(collisioner);
             uimanager.GoBackToMenu();
         }
+
         textoDelReloj = minutes.ToString("00") + ":" + seconds.ToString("00"); //refresh the string of the chronometer
         myText.text = textoDelReloj;//we give the string to the text label object
         

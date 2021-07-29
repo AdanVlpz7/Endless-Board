@@ -7,12 +7,15 @@ TagManager:
   - UserManager
   - Txt
   - Toggle Bg
-  - OnText
-  - Handle
-  - Off Text
   - Platform
   - UIManager
   - Timer
+  - Bg
+  - PowerUp
+  - OnText
+  - Handle
+  - Off Text
+  - Canvas
   layers:
   - Default
   - TransparentFX

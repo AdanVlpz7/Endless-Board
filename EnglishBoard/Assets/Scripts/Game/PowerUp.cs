@@ -26,24 +26,9 @@ public class PowerUp : MonoBehaviour
             {
                 IncreaseDiceCount();
             }
-            Destroy(this.gameObject);
-        }
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            if(powerUpParent.randomIndex == 0)
+            if(powerUpParent.randomIndex == 3)
             {
-                IncreaseCoins();
-            }
-            if (powerUpParent.randomIndex == 1)
-            {
-                IncreaseTimer();
-            }
-            if (powerUpParent.randomIndex == 2)
-            {
-                IncreaseDiceCount();
+                IncreasePlayCount();
             }
             Destroy(this.gameObject);
         }
@@ -53,7 +38,8 @@ public class PowerUp : MonoBehaviour
     {
         Debug.Log("[PowerUp] Increasing Timer");
         Timer timer = GameObject.FindGameObjectWithTag("Timer").GetComponent<Timer>();
-        timer.timeToShowInSeconds += 20;
+        timer.timeToShowInSeconds += 20f;
+        Destroy(this.gameObject);
     }
     private void IncreaseCoins()
     {
@@ -62,6 +48,7 @@ public class PowerUp : MonoBehaviour
         userManager.coins += 100;
         PlayerPrefs.SetInt("UserCoins", userManager.coins);
         userManager.UpdateTextCoinIndicator();
+        Destroy(this.gameObject);
     }
     private void IncreaseDiceCount()
     {
@@ -71,5 +58,17 @@ public class PowerUp : MonoBehaviour
         PlayerPrefs.SetInt("UserDices", userManager.dices);
         UIManager uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
         uiManager.ChangeDiceCount();
+        Destroy(this.gameObject);
+    }
+
+    public void IncreasePlayCount()
+    {
+        Debug.Log("[PowerUp] Increasing Play Count");
+        UserManager userManager = GameObject.FindGameObjectWithTag("UserManager").GetComponent<UserManager>();
+        userManager.plays++;
+        PlayerPrefs.SetInt("UserPlays", userManager.plays);
+        UIManager uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+        uiManager.ChangePlaysCount();
+        Destroy(this.gameObject);
     }
 }

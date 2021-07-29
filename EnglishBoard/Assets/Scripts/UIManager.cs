@@ -20,10 +20,12 @@ public class UIManager : MonoBehaviour
     public GameObject indicatorSkin;
 
     public Text DiceCount;
+    public Text PlayCount;
     private void OnEnable()
     {
         ChangeIndicatorSkin();
         ChangeDiceCount();
+        ChangePlaysCount();
     }
     public void ChangeIndicatorSkin()
     {
@@ -32,13 +34,28 @@ public class UIManager : MonoBehaviour
     }
     public void ChangeDiceCount()
     {
+        UserManager userManager = GameObject.FindGameObjectWithTag("UserManager").GetComponent<UserManager>();
         DiceCount.text = PlayerPrefs.GetInt("PlayerDices").ToString() + " x";
+        DiceCount.text = userManager.dices.ToString() + " x";
+    }
+    public void ChangePlaysCount()
+    {
+        UserManager userManager = GameObject.FindGameObjectWithTag("UserManager").GetComponent<UserManager>();
+        PlayCount.text = "x " + PlayerPrefs.GetInt("PlayerPlays").ToString();
+        PlayCount.text = "x " + userManager.plays.ToString();
     }
     public void GoToGame()
     {
-        if(principalMenuParentObject.activeSelf)
-            principalMenuParentObject.SetActive(false);
-        gameParentObject.SetActive(true);
+        if (userManager.plays > 0)
+        {
+            userManager.plays--;
+            PlayerPrefs.SetInt("UserPlays", userManager.plays);
+            ChangePlaysCount();
+            if (principalMenuParentObject.activeSelf)
+                principalMenuParentObject.SetActive(false);
+            gameParentObject.SetActive(true);
+            
+        }
     }
     public void GoBackToMenu()
     {
@@ -54,6 +71,8 @@ public class UIManager : MonoBehaviour
             gameParentObject.SetActive(false);
         if (throwingDicePanel.activeInHierarchy)
             throwingDicePanel.SetActive(false);
+        ChangeDiceCount();
+        ChangePlaysCount();
         principalMenuParentObject.SetActive(true);
     }
     public void GoToSettingsMenu()
@@ -89,6 +108,9 @@ public class UIManager : MonoBehaviour
     private IEnumerator previousGoToMenu()
     {
         yield return new WaitForSeconds(6f);
+        AudioSource audioSource = GetComponent<AudioSource>();
+        //if(UserManager.soundOn == 1)
+            //audioSource.Play();
         GoBackToMenu();
     }
 }

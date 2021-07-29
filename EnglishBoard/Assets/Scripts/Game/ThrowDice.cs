@@ -12,6 +12,7 @@ public class ThrowDice : MonoBehaviour
     public Sprite[] whiteDiceSprites;
     public Sprite[] redDiceSprites;
     public Sprite[] greenDiceSprites;
+    public Transform diceTransform;
     private void OnEnable()
     {
         UserManager userManager;
@@ -20,6 +21,8 @@ public class ThrowDice : MonoBehaviour
         //ThrowDiceSprite();
         StartCoroutine(rotationEffect());
         audioSource = GetComponent<AudioSource>();
+
+        DiceImage.GetComponent<Animator>().speed = 1;
         if (UserManager.soundOn == 1)
             audioSource.Play();
     }
@@ -39,6 +42,7 @@ public class ThrowDice : MonoBehaviour
     {
         UserManager userManager;
         userManager = GameObject.FindGameObjectWithTag("UserManager").GetComponent<UserManager>();
+       
         switch (userManager.diceIndexUsed)
         {
             case 0:
@@ -51,9 +55,10 @@ public class ThrowDice : MonoBehaviour
                 DiceImage.GetComponent<Image>().sprite = greenDiceSprites[0];
                 break;
         }
-        //DiceImage.transform.Rotate(new Vector3(0, 180, 0));
-        RotateLeft(1,true);
+        
         yield return new WaitForSeconds(4f);
+        DiceImage.GetComponent<Animator>().speed = 0;
+        DiceImage.transform.Rotate(Vector3.zero);
         ThrowDiceSprite();
     }
     void RotateLeft(int i, bool canRotate)
@@ -88,7 +93,13 @@ public class ThrowDice : MonoBehaviour
                 DiceImage.GetComponent<Image>().sprite = greenDiceSprites[random];
                 break;
         }
-        
+        UIManager uiManager;
+        uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+        if(UserManager.soundOn == 1)
+        {
+            AudioSource uiAudio = uiManager.GetComponent<AudioSource>();
+            uiAudio.Play();
+        }
         userManager.boardPosition += random;
         if (userManager.boardPosition >= 50)
             CheckAchievements(3);

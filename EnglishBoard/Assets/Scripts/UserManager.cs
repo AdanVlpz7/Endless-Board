@@ -15,6 +15,7 @@ public class UserManager : MonoBehaviour
     public List<int> achievements = new List<int> { 8 };
     public int boardPosition = 0;
     public int dices = 1;
+    public int plays = 1;
     public static int soundOn = 1; 
     public static int musicOn = 1;
 
@@ -23,7 +24,7 @@ public class UserManager : MonoBehaviour
     private void Start()
     {
         LoadData();
-        PlayerPrefs.SetInt("PlayerDices", 15);
+        //PlayerPrefs.SetInt("PlayerDices");
         achievements = new List<int>();
         if (diceBought == null)
             diceBought.Insert(0, 0);
@@ -54,6 +55,7 @@ public class UserManager : MonoBehaviour
         skinIndexUsed = PlayerPrefs.GetInt("SkinIndex");
         dices = PlayerPrefs.GetInt("PlayerDices",1);
         boardPosition = PlayerPrefs.GetInt("BoardPos",1);
+        plays = PlayerPrefs.GetInt("PlayerPlays", 1);
         AudioSource generalAudio = this.GetComponent<AudioSource>();
         if (musicOn == 1)
             generalAudio.Play();
@@ -74,7 +76,7 @@ public class UserManager : MonoBehaviour
             skinBought.Add(indexToAdd);
         else
             diceBought.Add(indexToAdd);
-        shopCoinIndicator.text = coins.ToString();
+        shopCoinIndicator.text = "$ " + coins.ToString();
         PlayerPrefs.SetInt("UserCoins", coins);
         CheckAchievement();
     }
