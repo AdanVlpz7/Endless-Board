@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class DailyEventTimer : MonoBehaviour
 {
-	public Button timerButton;
+	public int idAchievement;
+	public Image imageAchievement;
 	public Text timeLabel;
 	public string StartTime;
 	public string EndTime;
@@ -82,7 +83,7 @@ public class DailyEventTimer : MonoBehaviour
 	public string GetRemainingTime(double x)
 	{
 		TimeSpan tempB = TimeSpan.FromMilliseconds(x);
-		Timeformat = string.Format("{0:D2}:{1:D2}:{2:D2}", tempB.Hours, tempB.Minutes, tempB.Seconds);
+		Timeformat = string.Format("{0:D3}:{1:D2}:{2:D2}", tempB.Hours, tempB.Minutes, tempB.Seconds);
 		return Timeformat;
 	}
 
@@ -92,7 +93,7 @@ public class DailyEventTimer : MonoBehaviour
 		timerSet = false;
 		tcounter -= Time.deltaTime * 1000;
 		disableButton("Starting Soon : " + GetRemainingTime(tcounter));
-
+		imageAchievement.color = Color.gray;
 		if (tcounter <= 0)
 		{
 			countIsReady = false;
@@ -116,7 +117,9 @@ public class DailyEventTimer : MonoBehaviour
 	//enable button function
 	private void enableButton(string x)
 	{
-		timerButton.interactable = true;
+		//imageAchievement.interactable = true;
+		
+		imageAchievement.color = Color.gray;
 		timeLabel.text = x;
 	}
 
@@ -124,7 +127,7 @@ public class DailyEventTimer : MonoBehaviour
 	//disable button function
 	private void disableButton(string x)
 	{
-		timerButton.interactable = false;
+		imageAchievement.color = Color.white;
 		timeLabel.text = x;
 	}
 
