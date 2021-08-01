@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     {
         //Instantiate(platformPrefab, platformSpawner.GetComponent<SpawnerTracker>().spawnPos, Quaternion.identity, platformSpawner.transform);
         //InstanciatingAPlatform();
+        GameFinished = false;
         StartCoroutine(spawningPlatform());
         Instantiate(playerPrefab, playerSpawner.transform);
         Instantiate(playerPlatformSpawner, playerPlatformSpawnerTransform.position, Quaternion.identity, playerPlatformSpawnerTransform);

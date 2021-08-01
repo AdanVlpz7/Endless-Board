@@ -73,6 +73,7 @@ public class DailyRecord : MonoBehaviour
                     Debug.Log("[DailyRecord] You already played today.");
                     //si entramos a jugar y aún no toca recompensa pero ya habíamos jugado
                     rewardParentObject.SetActive(false);
+                    return;
                 }
                 if(!weAreInPreviousDay)
                 {
@@ -162,11 +163,12 @@ public class DailyRecord : MonoBehaviour
             if (nextDay > 1)
             {
                 Debug.Log("Case 1 Previous Day To Reward");
-                previousDay = nextDay--;
-            if (day == previousDay)
-                return true;
-            else
-                return false;
+                previousDay = nextDay-1;
+                Debug.Log("previousDay : " + previousDay + " day: " + day + " nextDay was settled on: "+nextDay);
+                if (day == previousDay)
+                    return true;
+                else
+                    return false;
             }
             if(nextDay == 1)
             {
@@ -193,26 +195,26 @@ public class DailyRecord : MonoBehaviour
                         else return false;
                     case 4:
                     Debug.Log("Case 4 Previous Day To Reward");
-                    previousDay = 31;
-                        if (currentDay == previousDay)
+                    previousDay = 30;
+                        if (day == previousDay)
                             return true;
                         else return false;
                     case 5:
                     Debug.Log("Case 5 Previous Day To Reward");
-                    previousDay = 30;
-                        if (currentDay == previousDay)
+                    previousDay = 31;
+                        if (day == previousDay)
                             return true;
                         else return false;
                     case 6:
                     Debug.Log("Case 6 Previous Day To Reward");
-                    previousDay = 31;
-                        if (currentDay == previousDay)
+                    previousDay = 30;
+                        if (day == previousDay)
                             return true;
                         else return false;
                     case 7:
                     Debug.Log("Case 7 Previous Day To Reward");
-                    previousDay = 30;
-                        if (currentDay == previousDay)
+                    previousDay = 31;
+                        if (day == previousDay)
                             return true;
                         else return false;
                     case 8:
@@ -224,25 +226,25 @@ public class DailyRecord : MonoBehaviour
                     case 9:
                     Debug.Log("Case 9 Previous Day To Reward");
                     previousDay = 31;
-                        if (currentDay == previousDay)
+                        if (day == previousDay)
                             return true;
                         else return false;
                     case 10:
                     Debug.Log("Case 10 Previous Day To Reward");
                     previousDay = 30;
-                        if (currentDay == previousDay)
+                        if (day == previousDay)
                             return true;
                         else return false;
                     case 11:
                     Debug.Log("Case 11 Previous Day To Reward");
                     previousDay = 31;
-                        if (currentDay == previousDay)
+                        if (day == previousDay)
                             return true;
                         else return false;
                     case 12:
                     Debug.Log("Case 12 Previous Day To Reward");
                     previousDay = 30;
-                        if (currentDay == previousDay)
+                        if (day == previousDay)
                             return true;
                         else return false;
 

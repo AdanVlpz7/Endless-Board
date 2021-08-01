@@ -20,7 +20,7 @@ public class SpawnerTracker : MonoBehaviour
     IEnumerator advanceSpawner()
     {
         yield return new WaitForSeconds(1.5f);
-        spawnPos += Vector3.up * 200;
+        spawnPos += Vector3.up * 190;
         if(!GameManager.GameFinished)
             StartCoroutine(advanceSpawner());
 

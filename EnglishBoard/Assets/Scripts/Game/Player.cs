@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         //this.transform.Translate(Vector3.down * 2.5f);
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
