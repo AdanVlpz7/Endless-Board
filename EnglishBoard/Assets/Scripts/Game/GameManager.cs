@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         //Instantiate(platformPrefab, platformSpawner.GetComponent<SpawnerTracker>().spawnPos, Quaternion.identity, platformSpawner.transform);
+        //InstanciatingAPlatform();
         StartCoroutine(spawningPlatform());
         Instantiate(playerPrefab, playerSpawner.transform);
         Instantiate(playerPlatformSpawner, playerPlatformSpawnerTransform.position, Quaternion.identity, playerPlatformSpawnerTransform);
@@ -54,7 +55,7 @@ public class GameManager : MonoBehaviour
             canSpawnPlay = true;
             spawningCount = 0;
         }
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.5f);
         canSpawnPlay = false;
         //+ new Vector3(Random.Range(-100,100),0,0)
         //Instantiate(platformPrefab, platformSpawner.GetComponent<SpawnerTracker>().spawnPos,Quaternion.identity,platformSpawner.transform);

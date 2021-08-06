@@ -26,15 +26,20 @@ public class DetectorDestruyer : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
         if (collision.gameObject.CompareTag("Player"))
         {
             StartCoroutine(FinishGame());
-            
+
         }
-        if(!collision.gameObject.CompareTag("Bg"))
+        if (!collision.gameObject.CompareTag("Bg"))
             Destroy(collision.gameObject);
         //else
-            //betterJump = GameObject.FindGameObjectWithTag("Player").GetComponent<BetterJump>();
+        //betterJump = GameObject.FindGameObjectWithTag("Player").GetComponent<BetterJump>();
     }
     IEnumerator FinishGame()
     {

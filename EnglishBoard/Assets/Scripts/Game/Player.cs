@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
         Debug.Log("Jumping");
         //Rigidbody2D rb = this.GetComponent<Rigidbody2D>();
         
-        rb.AddForce(new Vector2(0f, 95f), ForceMode2D.Impulse);
+        rb.AddForce(new Vector2(0f, 85), ForceMode2D.Impulse);
         transform.parent = canvas.transform;
         //this.transform.Translate(Vector3.up * 105f * Time.deltaTime);
         //rb.velocity = Vector2.up * 145.0f;

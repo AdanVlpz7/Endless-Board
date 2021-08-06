@@ -64,19 +64,20 @@ public class DailyRecord : MonoBehaviour
                     return;
                 }
             }
-            else
+            if(currentMonth != nextDay)
             {
                 //dia diferente al siguiente
                 weAreInPreviousDay = PreviousDayToReward(currentMonth, currentDay);
-                if (weAreInPreviousDay)
-                {
+                if (weAreInPreviousDay) { 
+
+                    Debug.Log("[DailyRecord] You already played today.");
                     //si entramos a jugar y aún no toca recompensa pero ya habíamos jugado
                     rewardParentObject.SetActive(false);
-
                 }
-                else
+                if(!weAreInPreviousDay)
                 {
                     //reiniciar cuenta
+                    Debug.Log("[DailyRecord] restarting count.");
                     RestartProcess();
                     if (!rewardParentObject.activeInHierarchy)
                         rewardParentObject.SetActive(true);
@@ -161,11 +162,13 @@ public class DailyRecord : MonoBehaviour
             if (nextDay > 1)
             {
                 Debug.Log("Case 1 Previous Day To Reward");
-                previousDay = day--;
-                if (day == previousDay)
-                    return true;
-            }
+                previousDay = nextDay--;
+            if (day == previousDay)
+                return true;
             else
+                return false;
+            }
+            if(nextDay == 1)
             {
                 //other months
                 switch (month)

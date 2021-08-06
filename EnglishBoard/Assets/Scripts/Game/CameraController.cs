@@ -37,12 +37,12 @@ public class CameraController : MonoBehaviour
 
         if(transform.position.y >= bg2.position.y)
         {
-            bg1.position = SetPos(bg1TargetPos, bg1.position.x, bg2.position.y + size - 100, bg1.position.z);
+            bg1.position = SetPos(bg1TargetPos, bg1.position.x, bg2.position.y + size - 200, bg1.position.z);
             Switching();
         }
         if(transform.position.y <= bg1.position.y)
         {
-            bg2.position = SetPos(bg2TargetPos, bg2.position.x, bg1.position.y - size + 100, bg2.position.z);
+            bg2.position = SetPos(bg2TargetPos, bg2.position.x, bg1.position.y - size + 200, bg2.position.z);
             Switching();
         }
     }
