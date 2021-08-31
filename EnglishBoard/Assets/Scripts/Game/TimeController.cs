@@ -36,11 +36,11 @@ public class TimeController : MonoBehaviour
 
 
 	//time fether coroutine
-	public IEnumerator getTime()
+	public void getTime()
 	{
 		Debug.Log("==> step 1. Getting info from internet now!");
-		WWW www = new WWW(_url);
-		yield return www;
+		//WWW www = new WWW(_url);
+		//yield return www;
 		Debug.Log("==> step 2. Got the info from internet!");
 		
 		_timeData = System.DateTime.Now.ToString("MM/dd/yyyy");
@@ -59,20 +59,21 @@ public class TimeController : MonoBehaviour
 	void Start()
 	{
 		Debug.Log("==> TimeManager script is Ready.");
-		StartCoroutine("getTime");
+		//StartCoroutine("getTime");
+		getTime();
 	}
 
 	//get the current date
-	public string getCurrentDateNow()
+	public int getCurrentDateNow()
 	{
-		return _currentDate;
+		return int.Parse(_currentDate);
 	}
 
 
 	//get the current Time
-	public string getCurrentTimeNow()
+	public int getCurrentTimeNow()
 	{
-		return _currentMonth;
+		return int.Parse(_currentMonth);
 	}
 
 

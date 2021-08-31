@@ -7,13 +7,14 @@ using UnityEngine.UI;
 public class DailyRecord : MonoBehaviour
 {
     private AudioSource audioSource;
+    
     public List<int> idAchievements = new List<int> { 0 };
-    public Sprite[] rewardsImages;
+    public Image[] rewardsImages;
     public GameObject rewardParentObject;
     public int idToSet = 0;
     public bool weAreInPreviousDay = true;
-    private int currentDay;
-    private int currentMonth;
+    private int currentDay = 0;
+    private int currentMonth = 0;
     private int nextDay;
     private int nextMonth;
     // Start is called before the first frame update
@@ -24,40 +25,64 @@ public class DailyRecord : MonoBehaviour
         {
             currentDay = 0;
             currentMonth = 0;
+            if (!rewardParentObject.activeInHierarchy)
+                rewardParentObject.SetActive(true);
+            return;
+            
         }
         if (currentDay == 0 && currentMonth == 0)
         {
             RestartProcess();
+            if (!rewardParentObject.activeInHierarchy)
+                rewardParentObject.SetActive(true);
+            return;
         }
-        else
+        if(currentDay != 0)
         {
             //int temp = 
-            currentDay = Int32.Parse(GetComponent<TimeController>().getCurrentDateNow());
-            currentMonth = Int32.Parse(GetComponent<TimeController>().getCurrentTimeNow());
-            if (currentDay == nextDay)
+            currentDay = (GetComponent<TimeController>().getCurrentDateNow());
+            currentMonth = (GetComponent<TimeController>().getCurrentTimeNow());
+            if (currentMonth == nextDay)
             {
-                rewardParentObject.SetActive(true);
-                //nuevo dia
-                idToSet++;
-                PlayerPrefs.SetInt("idReward", idToSet);
-                SetWhichMethodGiveRewards(idToSet);
+                if (idToSet == 6)
+                {
+                    RestartProcess();
+                    rewardParentObject.SetActive(true);
+                }
+                else
+                {
+                    if (!rewardParentObject.activeInHierarchy)
+                        rewardParentObject.SetActive(true);
+                    //nuevo dia
+                    idToSet++;
+                    nextDay = CheckNextDay(currentMonth, currentDay);
+                    PlayerPrefs.SetInt("Day", currentMonth);
+                    PlayerPrefs.SetInt("idReward", idToSet);
+                    PlayerPrefs.SetInt("NextDay", nextDay);
+                    Debug.Log("Day: " + currentMonth + " Month: " + currentDay + " Next Day: " + nextDay + " IdRewardAble: " + idToSet);
+                    SetWhichMethodGiveRewards(idToSet);
+                    return;
+                }
             }
             else
             {
                 //dia diferente al siguiente
-                weAreInPreviousDay = PreviousDayToReward(currentDay,currentMonth);
+                weAreInPreviousDay = PreviousDayToReward(currentMonth, currentDay);
                 if (weAreInPreviousDay)
                 {
                     //si entramos a jugar y aún no toca recompensa pero ya habíamos jugado
                     rewardParentObject.SetActive(false);
+
                 }
                 else
                 {
                     //reiniciar cuenta
                     RestartProcess();
+                    if (!rewardParentObject.activeInHierarchy)
+                        rewardParentObject.SetActive(true);
+                    return;
                 }
             }
-            currentMonth = Int32.Parse(GetComponent<TimeController>().getCurrentTimeNow());
         }
         audioSource = GetComponent<AudioSource>();
         if (UserManager.soundOn == 1)
@@ -68,9 +93,10 @@ public class DailyRecord : MonoBehaviour
     {
         if (month != 2)
         {
-            if (day != 30  || day != 31)
+            if (day < 30)
             {
-                return day++;
+                Debug.Log("Just adding one day");
+                return day+=1;
             }
             else
             {
@@ -78,7 +104,12 @@ public class DailyRecord : MonoBehaviour
                 switch (month)
                 {
                     case 1:
-                        return day == 30 ? 31 : 1;
+                        Debug.Log("Your Month is January bro");
+                        if (day == 30)
+                            return 31;
+                        if (day == 31)
+                            return 1;
+                        break;
                     case 3:
                         return day == 30 ? 31 : 1;
                     case 4:
@@ -88,9 +119,19 @@ public class DailyRecord : MonoBehaviour
                     case 6:
                         return 1;
                     case 7:
-                        return day == 30 ? 31 : 1;
+                        if (day == 30)
+                            return 31;
+                        if (day == 31)
+                            return 1;
+                        break;
+                        //return day == 30 ? 31 : 1;
                     case 8:
-                        return day == 30 ? 31 : 1;
+                        Debug.Log("Your Month is August bro");
+                        if (day == 30)
+                            return 31;
+                        if (day == 31)
+                            return 1;
+                        break;
                     case 9:
                         return 1;
                     case 10:
@@ -111,16 +152,17 @@ public class DailyRecord : MonoBehaviour
                 return day++;
             }
         }
-        return 0;
+        return day++;
     }
 
     bool PreviousDayToReward(int day, int month)
     {
         int previousDay;
-            if (day != 1)
+            if (nextDay > 1)
             {
+                Debug.Log("Case 1 Previous Day To Reward");
                 previousDay = day--;
-                if (currentDay == previousDay)
+                if (day == previousDay)
                     return true;
             }
             else
@@ -129,62 +171,74 @@ public class DailyRecord : MonoBehaviour
                 switch (month)
                 {
                     case 1:
-                        previousDay = 31;
-                        if (currentDay == previousDay)
+                    Debug.Log("Case 2 Previous Day To Reward");
+                    previousDay = 31;
+                        if (day == previousDay)
                             return true;
                         else return false;
                     case 2:
-                        previousDay = 31;
-                        if (currentDay == previousDay)
+                    Debug.Log("Case 2 Previous Day To Reward");
+                    previousDay = 31;
+                        if (day == previousDay)
                             return true;
                         else return false;
                     case 3:
-                        previousDay = 28;
-                        if (currentDay == previousDay)
+                    Debug.Log("Case 3 Previous Day To Reward");
+                    previousDay = 28;
+                        if (day == previousDay)
                             return true;
                         else return false;
                     case 4:
-                        previousDay = 31;
+                    Debug.Log("Case 4 Previous Day To Reward");
+                    previousDay = 31;
                         if (currentDay == previousDay)
                             return true;
                         else return false;
                     case 5:
-                        previousDay = 30;
+                    Debug.Log("Case 5 Previous Day To Reward");
+                    previousDay = 30;
                         if (currentDay == previousDay)
                             return true;
                         else return false;
                     case 6:
-                        previousDay = 31;
+                    Debug.Log("Case 6 Previous Day To Reward");
+                    previousDay = 31;
                         if (currentDay == previousDay)
                             return true;
                         else return false;
                     case 7:
-                        previousDay = 30;
+                    Debug.Log("Case 7 Previous Day To Reward");
+                    previousDay = 30;
                         if (currentDay == previousDay)
                             return true;
                         else return false;
                     case 8:
-                        previousDay = 31;
-                        if (currentDay == previousDay)
+                    Debug.Log("Case 8 Previous Day To Reward");
+                    previousDay = 31;
+                        if (day == previousDay)
                             return true;
                         else return false;
                     case 9:
-                        previousDay = 31;
+                    Debug.Log("Case 9 Previous Day To Reward");
+                    previousDay = 31;
                         if (currentDay == previousDay)
                             return true;
                         else return false;
                     case 10:
-                        previousDay = 30;
+                    Debug.Log("Case 10 Previous Day To Reward");
+                    previousDay = 30;
                         if (currentDay == previousDay)
                             return true;
                         else return false;
                     case 11:
-                        previousDay = 31;
+                    Debug.Log("Case 11 Previous Day To Reward");
+                    previousDay = 31;
                         if (currentDay == previousDay)
                             return true;
                         else return false;
                     case 12:
-                        previousDay = 30;
+                    Debug.Log("Case 12 Previous Day To Reward");
+                    previousDay = 30;
                         if (currentDay == previousDay)
                             return true;
                         else return false;
@@ -200,15 +254,16 @@ public class DailyRecord : MonoBehaviour
     void RestartProcess()
     {
         //in case our variables are empty
-        currentDay = Int32.Parse(GetComponent<TimeController>().getCurrentDateNow());
-        currentMonth = Int32.Parse(GetComponent<TimeController>().getCurrentTimeNow());
+        currentDay = (GetComponent<TimeController>().getCurrentDateNow());
+        currentMonth = (GetComponent<TimeController>().getCurrentTimeNow());
         idToSet = 0;
         PlayerPrefs.SetInt("idReward", idToSet);
         SetWhichMethodGiveRewards(idToSet);
-        nextDay = CheckNextDay(currentDay, currentMonth);
-        rewardParentObject.SetActive(true);
-        Debug.Log("Day: " + currentDay + "Month: " + "Next Day: " + nextDay + "IdRewardAble" + idToSet);
-        PlayerPrefs.SetInt("Day", currentDay);
+        nextDay = CheckNextDay(currentMonth, currentDay);
+        if (!rewardParentObject.activeInHierarchy)
+            rewardParentObject.SetActive(true);
+        Debug.Log("Day: " + currentMonth + " Month: " +  currentDay + " Next Day: " + nextDay + " IdRewardAble: " + idToSet);
+        PlayerPrefs.SetInt("Day", currentMonth);
         PlayerPrefs.SetInt("Month", currentMonth);
         PlayerPrefs.SetInt("NextDay", nextDay);
     }
@@ -216,6 +271,8 @@ public class DailyRecord : MonoBehaviour
     {
         currentDay = PlayerPrefs.GetInt("Day",0);
         nextDay = PlayerPrefs.GetInt("NextDay",0);
+        idToSet = PlayerPrefs.GetInt("idReward");
+        Debug.Log("[DailyRecord] current Day is: " + currentDay + " Next Day was settled on: " + nextDay + " Id To Set Was: " + idToSet);
     }
 
     void SetWhichMethodGiveRewards(int id)
@@ -225,29 +282,38 @@ public class DailyRecord : MonoBehaviour
             case 0:
                 RewardDay1();
                 //change to white the color of the sprite
+                rewardsImages[0].color = Color.white;
                 break;
             case 1:
                 RewardDay2();
                 //change to white the color of the sprite
+                rewardsImages[1].color = Color.white;
                 break;
             case 2:
                 RewardDay3();
                 //change to white the color of the sprite
+                rewardsImages[2].color = Color.white;
                 break;
             case 3:
                 RewardDay4();
                 //change to white the color of the sprite
+                rewardsImages[3].color = Color.white;
                 break;
             case 4:
                 RewardDay5();
                 //change to white the color of the sprite
+                rewardsImages[4].color = Color.white;
                 break;
             case 5:
                 RewardDay6();
                 //change to white the color of the sprite
+                rewardsImages[5].color = Color.white;
                 break;
             case 6:
                 //change to white the color of the sprite
+                rewardsImages[6].color = Color.white;
+                rewardsImages[7].color = Color.white;
+                rewardsImages[8].color = Color.white;
                 RewardDay7();
                 break;
 
@@ -258,67 +324,103 @@ public class DailyRecord : MonoBehaviour
         Debug.Log("[Daily Reward] giving first Day Reward");
         //we always give the player one play opportunity at day
         UserManager userManager = GetComponent<UserManager>();
+        if (!rewardParentObject.activeInHierarchy)
+            rewardParentObject.SetActive(true);
         userManager.plays++;
         userManager.coins += 500;
+        userManager.UpdateTextCoinIndicator();
+        UIManager uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+        uiManager.ChangePlaysCount();
         PlayerPrefs.SetInt("UserCoins", userManager.coins);
-        PlayerPrefs.SetInt("UserPlays", userManager.plays);
+        PlayerPrefs.SetInt("PlayerPlays", userManager.plays);
     }
     void RewardDay2()
     {
         Debug.Log("[Daily Reward] giving second Day Reward");
         //we always give the player one play opportunity at day
+        if (!rewardParentObject.activeInHierarchy)
+            rewardParentObject.SetActive(true);
         UserManager userManager = GetComponent<UserManager>();
         userManager.plays++;
         userManager.coins += 500;
+        userManager.UpdateTextCoinIndicator();
+        UIManager uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+        uiManager.ChangePlaysCount();
         PlayerPrefs.SetInt("UserCoins", userManager.coins);
-        PlayerPrefs.SetInt("UserPlays", userManager.plays);
+        PlayerPrefs.SetInt("PlayerPlays", userManager.plays);
     }
     void RewardDay3()
     {
         Debug.Log("[Daily Reward] giving third Day Reward");
+        if (!rewardParentObject.activeInHierarchy)
+            rewardParentObject.SetActive(true);
         //we always give the player one play opportunity at day
         UserManager userManager = GetComponent<UserManager>();
         userManager.dices += 2;
         userManager.plays++;
-        PlayerPrefs.SetInt("UserDices", userManager.dices);
-        PlayerPrefs.SetInt("UserPlays", userManager.plays);
+        UIManager uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+        uiManager.ChangeDiceCount();
+        uiManager.ChangePlaysCount();
+        PlayerPrefs.SetInt("PlayerDices", userManager.dices);
+        PlayerPrefs.SetInt("PlayerPlays", userManager.plays);
     }
     void RewardDay4()
     {
         Debug.Log("[Daily Reward] giving fourth Day Reward");
+        if (!rewardParentObject.activeInHierarchy)
+            rewardParentObject.SetActive(true);
         //we always give the player one play opportunity at day
         UserManager userManager = GetComponent<UserManager>();
         userManager.dices += 4;
         userManager.plays++;
-        PlayerPrefs.SetInt("UserDices", userManager.dices);
-        PlayerPrefs.SetInt("UserPlays", userManager.plays);
+        UIManager uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+        uiManager.ChangeDiceCount();
+        uiManager.ChangePlaysCount();
+        PlayerPrefs.SetInt("PlayerDices", userManager.dices);
+        PlayerPrefs.SetInt("PlayerPlays", userManager.plays);
     }
     void RewardDay5()
     {
         Debug.Log("[Daily Reward] giving fifth Day Reward");
+        if (!rewardParentObject.activeInHierarchy)
+            rewardParentObject.SetActive(true);
         //we always give the player one play opportunity at day
         UserManager userManager = GetComponent<UserManager>();
+        UIManager uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+        uiManager.ChangePlaysCount();
         userManager.plays += 2;
-        PlayerPrefs.SetInt("UserPlays", userManager.plays);
+        uiManager.ChangePlaysCount();
+        PlayerPrefs.SetInt("PlayerPlays", userManager.plays);
     }
     void RewardDay6()
     {
         Debug.Log("[Daily Reward] giving sixth Day Reward");
+        if (!rewardParentObject.activeInHierarchy)
+            rewardParentObject.SetActive(true);
         //we always give the player one play opportunity at day
         UserManager userManager = GetComponent<UserManager>();
+        UIManager uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+  
         userManager.plays += 3;
-        PlayerPrefs.SetInt("UserPlays", userManager.plays);
+        uiManager.ChangePlaysCount();
+        PlayerPrefs.SetInt("PlayerPlays", userManager.plays);
     }
     void RewardDay7()
     {
         Debug.Log("[Daily Reward] giving final Day Reward");
+        if (!rewardParentObject.activeInHierarchy)
+            rewardParentObject.SetActive(true);
         //we always give the player one play opportunity at day
         UserManager userManager = GetComponent<UserManager>();
         userManager.plays += 4;
         userManager.dices += 3;
         userManager.coins += 1000;
-        PlayerPrefs.SetInt("UserDices", userManager.dices);
+        userManager.UpdateTextCoinIndicator();
+        UIManager uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+        uiManager.ChangeDiceCount();
+        uiManager.ChangePlaysCount();
+        PlayerPrefs.SetInt("PlayDices", userManager.dices);
         PlayerPrefs.SetInt("UserCoins", userManager.coins);
-        PlayerPrefs.SetInt("UserPlays", userManager.plays);
+        PlayerPrefs.SetInt("PlayPlays", userManager.plays);
     }
 }
